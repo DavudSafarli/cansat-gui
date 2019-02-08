@@ -1,14 +1,25 @@
 {
   "name": "cansat-gui",
   "version": "0.1.0",
+  "main": "main.js",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "nodemon main.js"
   },
   "dependencies": {
+    "chart.js": "^2.7.3",
+    "concurrently": "^4.1.0",
+    "cors": "^2.8.5",
+    "electron": "^4.0.4",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9",
     "register-service-worker": "^1.5.2",
+    "serve": "^10.1.2",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "vue": "^2.5.22",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
@@ -20,6 +31,7 @@
     "@vue/cli-service": "^3.4.0",
     "@vue/eslint-config-airbnb": "^4.0.0",
     "babel-eslint": "^10.0.1",
+    "cross-env": "^5.2.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
