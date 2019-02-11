@@ -9,16 +9,16 @@
 import io from 'socket.io-client';
 // import Chart from 'chart.js/dist/Chart.bundle';
 
-let socket;
+// let socket;
 
 export default {
   mounted() {
-    const vue = this;
-    socket = io('localhost:8001');
-    socket.on('data', (data) => {
-      console.log(data);
-      vue.arr.push(data);
-    });
+    // const vue = this;
+    // socket = io('localhost:8001');
+    // socket.on('data', (data) => {
+    //   console.log(data);
+    //   vue.arr.push(data);
+    // });
   },
   data() {
     return {
