@@ -10,6 +10,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: 'DGraph',
   mounted() {
@@ -29,14 +30,14 @@ export default {
     };
   },
   methods: {
-    addPoint() {
-      this.labels.push(`Item ${this.c = this.c + 1}`);
-      this.data.push(30 - (Math.random() + 0.2) - this.c);
-      myLineChart.update({
-        duration: 100,
-        easing: 'easeInQuad',
-      });
-    },
+    // addPoint() {
+    //   this.labels.push(`Item ${this.c = this.c + 1}`);
+    //   this.data.push(30 - (Math.random() + 0.2) - this.c);
+    //   myLineChart.update({
+    //     duration: 100,
+    //     easing: 'easeInQuad',
+    //   });
+    // },
     init() {
       const el1 = this.$refs.graph1.getContext('2d');
       const chart1 = new Chart(el1, {
@@ -63,11 +64,11 @@ export default {
           title: {
             display: true,
             text: 'Altitude',
-            fontSize: '20'
+            fontSize: '20',
           },
           legend: {
             display: false,
-          }
+          },
         },
       });
 
@@ -96,17 +97,16 @@ export default {
           title: {
             display: true,
             text: 'Speed',
-            fontSize: '20'
+            fontSize: '20',
           },
           legend: {
             display: false,
-          }
+          },
         },
       });
-
-    }
+    },
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -114,7 +114,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around; 
+  justify-content: space-around;
   .canvas-wrap{
     width: 100%;
     height: 33vh;

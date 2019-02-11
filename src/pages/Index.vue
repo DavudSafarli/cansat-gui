@@ -28,7 +28,7 @@
                 </v-tab-item>
 
                 <v-tab-item :value="'tab-2'">
-                  <d-grid></d-grid> 
+                  <d-grid></d-grid>
                 </v-tab-item>
 
               </v-tabs-items>
@@ -42,11 +42,10 @@
 </template>
 
 <script>
+// eslint-disable-next-line
 import Chart from 'chart.js/dist/Chart.bundle';
 
-let myLineChart;
 export default {
-  
   data() {
     return {
       model: 'tab-1',

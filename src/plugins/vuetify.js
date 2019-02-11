@@ -21,7 +21,7 @@ import Vuetify, {
 } from 'vuetify/lib';
 
 import 'vuetify/src/stylus/app.styl';
-import 'vuetify/dist/vuetify.css'
+import 'vuetify/dist/vuetify.css';
 
 Vue.use(Vuetify, {
   iconfont: 'md',
@@ -44,5 +44,5 @@ Vue.use(Vuetify, {
     VTooltip,
     VProgressLinear,
     VSpacer,
-  }
+  },
 });
