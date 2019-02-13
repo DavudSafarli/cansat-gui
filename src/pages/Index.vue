@@ -4,9 +4,7 @@
       <v-container fluid grid-list-xs fill-height>
         <v-layout row fill-height>
           <v-flex md4 lg3 class="hidden-sm-and-down">
-            <v-card dark color="secondary">
-              <v-card-text class="px-0">4</v-card-text>
-            </v-card>
+            <d-telemetry></d-telemetry>
           </v-flex>
 
           <v-flex sm12 md8 lg9 fill-height>
@@ -48,7 +46,7 @@ import Chart from 'chart.js/dist/Chart.bundle';
 export default {
   data() {
     return {
-      model: 'tab-1',
+      model: 'tab-2',
     };
   },
 };

@@ -1,123 +1,67 @@
 <template>
   <div class="graphs-container">
-    <div class="canvas-wrap">
-      <canvas ref="graph1" id="myChart"></canvas>
-    </div>
-    <div class="canvas-wrap">
-      <canvas ref="graph2" id="myChart"></canvas>
-    </div>
+      <v-layout row wrap>
+        <v-flex xs6 class="half-height">
+          <div class="canvas-wrap">
+            <d-line-graph title="Altitude" :graph="altitude"></d-line-graph>
+          </div>
+        </v-flex>
+        <v-flex xs6 class="half-height">
+          <div class="canvas-wrap separator">
+            <d-line-graph title="Speed" :graph="speed"></d-line-graph>
+          </div>
+        </v-flex>
+        <v-flex xs6 class="half-height">
+          <div class="canvas-wrap">
+            <d-radar-graph></d-radar-graph>
+          </div>
+        </v-flex>
+      </v-layout>
+      
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'DGraph',
   mounted() {
-    this.init();
+    this.$store.dispatch('test') 
   },
-  data() {
-    return {
-      altitude: {
-        data: [10, 9, 8.5, 8.0, 5, 4, 1, 0.5, 0],
-        labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-      },
-      speed: {
-        data: [10, 9, 8.5, 8.0, 5, 4, 1, 0.5, 0],
-        labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-      },
-      c: 0,
-    };
+  computed: {
+    ...mapGetters([
+      'altitude',
+      'speed',
+    ])
   },
   methods: {
-    // addPoint() {
-    //   this.labels.push(`Item ${this.c = this.c + 1}`);
-    //   this.data.push(30 - (Math.random() + 0.2) - this.c);
-    //   myLineChart.update({
-    //     duration: 100,
-    //     easing: 'easeInQuad',
-    //   });
-    // },
-    init() {
-      const el1 = this.$refs.graph1.getContext('2d');
-      const chart1 = new Chart(el1, {
-        type: 'line',
-        data: {
-          labels: this.altitude.labels,
-          datasets: [
-            {
-              label: 'Measure 1',
-              data: this.altitude.data,
-              backgroundColor: 'rgba(255,255,255,0)',
-            },
-          ],
-        },
-        options: {
-          // responsive: false,
-          maintainAspectRatio: false,
-          aspectRatio: innerWidth / (innerHeight / 3),
-          elements: {
-            line: {
-              tension: 0.15,
-            },
-          },
-          title: {
-            display: true,
-            text: 'Altitude',
-            fontSize: '20',
-          },
-          legend: {
-            display: false,
-          },
-        },
-      });
-
-      const el2 = this.$refs.graph2.getContext('2d');
-      const chart2 = new Chart(el2, {
-        type: 'line',
-        data: {
-          labels: this.speed.labels,
-          datasets: [
-            {
-              label: 'Measure 1',
-              data: this.speed.data,
-              backgroundColor: 'rgba(255,255,255,0)',
-            },
-          ],
-        },
-        options: {
-          // responsive: false,
-          maintainAspectRatio: false,
-          aspectRatio: innerWidth / (innerHeight / 3),
-          elements: {
-            line: {
-              tension: 0.15,
-            },
-          },
-          title: {
-            display: true,
-            text: 'Speed',
-            fontSize: '20',
-          },
-          legend: {
-            display: false,
-          },
-        },
-      });
-    },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .graphs-container{
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   .canvas-wrap{
-    width: 100%;
-    height: 33vh;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    @media screen and (max-width: 1600px){
+      // make responsive
+      // height: 40%;
+    }
+    &.separator{
+      border-left: 1px solid rgba(0,0,0,0.1);
+      margin-left: 10px;
+    }
+  }
+  .half-height{
+    height: 50%;
   }
 }
 </style>

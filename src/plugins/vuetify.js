@@ -13,11 +13,8 @@ import Vuetify, {
   VBtn,
   VIcon,
   VDataTable,
-  VToolbar,
-  VDataIterator,
-  VTooltip,
-  VProgressLinear,
-  VSpacer,
+  VExpansionPanel,
+  VExpansionPanelContent,
 } from 'vuetify/lib';
 
 import 'vuetify/src/stylus/app.styl';
@@ -39,10 +36,7 @@ Vue.use(Vuetify, {
     VBtn,
     VIcon,
     VDataTable,
-    VToolbar,
-    VDataIterator,
-    VTooltip,
-    VProgressLinear,
-    VSpacer,
+    VExpansionPanel,
+    VExpansionPanelContent,
   },
 });
