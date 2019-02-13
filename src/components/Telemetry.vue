@@ -3,7 +3,7 @@
     <v-expansion-panel expand color="red" dark>
       <v-expansion-panel-content>
         <div slot="header">
-          
+          asds
         </div>
         <div>Salam</div>
       </v-expansion-panel-content>
