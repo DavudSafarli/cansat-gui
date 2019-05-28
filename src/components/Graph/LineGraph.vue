@@ -4,7 +4,7 @@
 
 <script>
 export default {
-	props: ['title', 'graph'],
+	props: ['title', 'graph', 'max'],
 	name: 'DLineGraph',
 	data() {
 		return {
@@ -15,7 +15,7 @@ export default {
 					datasets: [
 						{
 							data: this.graph.data,
-							backgroundColor: 'rgba(215,215,215,0.1)',
+							backgroundColor: 'rgba(215,215,215,0.5)',
 							pointBackgroundColor: 'rgb(0, 200, 150, 0.6)',
 						}
 					]
@@ -26,6 +26,7 @@ export default {
 						yAxes: [
 							{
 								ticks: {
+									max: this.max,
 									beginAtZero: true,
 									padding: 5,
 								}
@@ -56,7 +57,12 @@ export default {
 	mounted() {
 		const el1 = this.$refs.graph1.getContext('2d');
 		const chart = new Chart(el1, this.chart);
-		this.$store.commit('SET_ALTITUDE_CHART_ELEMENTS', chart);
+		// this.$store.commit('SET_ALTITUDE_CHART_ELEMENTS', chart);
+		if(window.arr == undefined){
+			window.arr = [];
+		}
+		arr.push(chart);
+
 	},
 };
 </script>

@@ -1,1 +1,10 @@
-telemetry sidebar
+200meter = 800px
+1meter = 4px
+
+cylinder
+3.3cm radius
+20cm height
+
+
+3.3cm = 0.132px
+20cm = 0.8px

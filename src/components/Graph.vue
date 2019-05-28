@@ -3,17 +3,22 @@
       <v-layout row wrap>
         <v-flex xs6 class="half-height">
           <div class="canvas-wrap">
-            <d-line-graph title="Altitude" :graph="altitude"></d-line-graph>
+            <d-line-graph title="Altitude" :max="220" :graph="altitude"></d-line-graph>
           </div>
         </v-flex>
         <v-flex xs6 class="half-height">
           <div class="canvas-wrap separator">
-            <d-line-graph title="Speed" :graph="speed"></d-line-graph>
+            <d-line-graph title="Speed" :max="40" :graph="speed"></d-line-graph>
           </div>
         </v-flex>
         <v-flex xs6 class="half-height">
           <div class="canvas-wrap">
-            <d-radar-graph></d-radar-graph>
+            <d-radar-graph :graph="radar"></d-radar-graph>
+          </div>
+        </v-flex>
+        <v-flex xs6 class="half-height">
+          <div class="canvas-wrap">
+            <d-slider :srcs="srcs" :graph="radar"></d-slider>
           </div>
         </v-flex>
       </v-layout>
@@ -27,13 +32,12 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'DGraph',
-  mounted() {
-    this.$store.dispatch('test') 
-  },
   computed: {
     ...mapGetters([
       'altitude',
       'speed',
+      'radar',
+      'srcs',
     ])
   },
   methods: {
@@ -49,7 +53,7 @@ export default {
   justify-content: space-around;
   .canvas-wrap{
     height: 100%;
-    box-sizing: border-box;
+    box-sizing: border-box; 
     padding: 10px;
     @media screen and (max-width: 1600px){
       // make responsive
@@ -63,5 +67,8 @@ export default {
   .half-height{
     height: 50%;
   }
+}
+.v-window__container{
+  transition: none;
 }
 </style>

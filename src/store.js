@@ -1,89 +1,140 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    c: 3,
-    chartElements: [],
-    altitude: {
-      labels: [0, 1, 2, ''],
-      data: [200, 50, 40],
+    srcs: [
+      'https://via.placeholder.com/480x480',
+      'https://via.placeholder.com/480x481',
+      'https://via.placeholder.com/481x480',
+      'https://via.placeholder.com/481x481',
+      'https://via.placeholder.com/482x481',
+      'https://via.placeholder.com/482x482',
+    ],
+    testData: {
+      time: 0,
+      c: 0,
+      h: 0,
+      v: 0,
+      lon: 0,
+      lat: 0,
+      pic: 0,
     },
-    speed: {    
-      labels: [0, 1, 2, ''],
-      data: [200, 50, 40],
+    testStartPoint: {
+      time: 0,
+      c: 0,
+      h: 198,
+      v: 12,
+      lon: 40.414323,
+      lat: 49.883668,
+      pic: true,
+    },
+    altitude: {
+      labels: [''],
+      data: [],
+    },
+    speed: {
+      labels: [''],
+      data: [],
     },
     radar: {
-      colors: ['#00abab'],
-      data: [{x: 0.45, y: 0.2},{x: -0.2, y: -0.2},{x: 0.3, y: -0.3}],
+      colors: ['#ff0000', '#00abab'],
+      data: [],
     },
+    // all data
     tableData: [
-      {
-        time: '12.5',
-        packetCount: 1,
-        altitude: 23,
-        speed: 123,
-        lon: 88,
-        lat: 92,
-        picIsTaken: true,
-      },
-      {
-        time: '24',
-        packetCount: 2,
-        altitude: 123,
-        speed: 2,
-        lon: 23,
-        lat: 91,
-        picIsTaken: true,
-      },
-      {
-        time: '35',
-        packetCount: 3,
-        altitude: 312,
-        speed: 22,
-        lon: 32,
-        lat: 91,
-        picIsTaken: false,
-      }
-    ]
+    ],
   },
   getters: {
     altitude: state => state.altitude,
     speed: state => state.speed,
+    radar: state => state.radar,
     table: state => state.tableData,
+    current: state => {
+      if(state.tableData.length == 0){
+        return state.testData;
+      }
+      return state.tableData[state.tableData.length - 1];
+    },
+    srcs: state => state.srcs
   },
   mutations: {
-    SET_ALTITUDE_CHART_ELEMENTS(state, el) {
-      state.chartElements.push(el);
-      console.log(el)
-    },
     UPDATE_ALTITUDE(state, { label, data }) {
       const l = state.altitude.labels.length;
       state.altitude.labels[l-1] = label;
-      state.altitude.labels.push(label);
+      state.altitude.labels.push('');
       state.altitude.data.push(data);
-      state.chartElements[0].update();
+      window.arr[0].update();
     },
     UPDATE_SPEED(state, { label, data }) {
-      state.speed.labels.push(label);
+      const l = state.speed.labels.length;
+      state.speed.labels[l-1] = label;
+      state.speed.labels.push('');
       state.speed.data.push(data);
+      window.arr[1].update();
     },
-    UPDATE_RADAR(state, { label, data }) {
-      state.radar.colors.unshift('rgba(0,0,0,0.1)');
+    UPDATE_RADAR(state, data) {
       state.radar.data.push(data);
+      let l = state.radar.data.length;
+      if(l > 2){
+        state.radar.colors[l-1] = state.radar.colors[l - 2]
+        state.radar.colors[l - 2] = 'rgba(0,0,0,0.1)'
+      }
+      
+      window.arr[2].update();
     },
+    UPDATE_TEST(state, data) {
+      state.testStartPoint = data;
+    },
+    ADD_DATA(state, data) {
+      state.tableData.push(data);
+    }
   },
   actions: {
     test({ state, commit }) {
+      function generate_fake_data() {
+        let data = {
+          time: state.testStartPoint.time + 1,
+          c: state.testStartPoint.c + 1,
+          h: parseFloat(state.testStartPoint.h) - 5 - Math.random() * 3,
+          v: parseFloat(state.testStartPoint.v) + Math.random() * 4 - 2,
+          lon: parseFloat(state.testStartPoint.lon) + Math.random() * 0.001 - 0.0005,
+          lat: parseFloat(state.testStartPoint.lat) + Math.random() * 0.001 - 0.0005,
+          pic: Math.random() > 0.5 ? true : false,
+        }
+        if(data.h < 0){
+          clearInterval(x)
+          return null;
+        }
+        
+        commit('UPDATE_TEST', data)
+        console.log(data)
+        data.h = data.h.toFixed(2)
+        data.v = data.v.toFixed(2)
+        data.lon = data.lon.toFixed(4)
+        data.lat = data.lat.toFixed(4)
+        return data;
+      }
+
       var x = setInterval(() => {
-        commit('UPDATE_ALTITUDE', {label: state.c++, data: Math.random()*50 + 50 })
-        // state.altitudeEl.update();
-      }, 10);
-      setTimeout(() => {
-        clearInterval(x)
-      }, 3000);
+        let data = generate_fake_data();
+        if(!data) return;
+        commit('ADD_DATA', data);
+        commit('UPDATE_ALTITUDE', {
+          label: data.c,
+          data: data.h,
+        })
+        commit('UPDATE_SPEED', {
+          label: data.c,
+          data: data.v,
+        })
+        commit('UPDATE_RADAR', {
+          x: data.lon,
+          y: data.lat,
+        })
+        
+      }, 1000);
     }
   },
 });

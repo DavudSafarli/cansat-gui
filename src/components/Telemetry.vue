@@ -1,37 +1,89 @@
 <template>
   <div id="telemetry">
-    <v-expansion-panel expand color="red" dark>
+    <v-expansion-panel expand color="red" dark v-model="panel">
       <v-expansion-panel-content>
         <div slot="header">
-          asds
+          KOMANDALAR
         </div>
-        <div>Salam</div>
+        <v-layout justify-center class="px-4 py-1" wrap>
+          <v-flex>
+            <v-btn color="success" style="text-transform: none">Ready</v-btn>
+          </v-flex>
+           <v-flex>
+            <v-btn color="red" @click="start">Connect</v-btn>
+          </v-flex>
+          <v-flex>
+            <v-btn color="cyan" @click="start">Test</v-btn>
+          </v-flex>
+        </v-layout>
       </v-expansion-panel-content>
+
       <v-expansion-panel-content>
-        <div slot="header">
-          Davud
-        </div>
-        <div>Salam</div>
+        <div slot="header">TELEMETRIYA</div>
+
+        <v-layout wrap align-center justify-center class="py-1">
+          <v-flex xs12 class="py-2"
+          v-for="(v, k, i) of current" :key="k">
+            <v-layout class="px-4">
+
+              <v-flex xs8 class="subheading grey--text text--lighten-2">
+                {{telemetry[i]}}:
+              </v-flex>
+              <v-flex xs4 text-xs-center class="subheading teal--text text--accent-1">
+                {{v}}
+              </v-flex>
+
+            </v-layout>
+            <v-divider v-if="i + 1!= 7"></v-divider>
+          </v-flex>
+          
+        </v-layout>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </div>
-  <!-- <v-card height="100%" color="#2c3e50" dark>
-    <v-card-text class="px-0">4</v-card-text>
-  </v-card> -->
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'DTelemetry',
+  computed: {
+    ...mapGetters([
+      'current',
+    ])
+  },
+  data() {
+    return {
+      panel: [true, true],
+      telemetry: [
+        'Çalışma müddəti',
+        'Paketlərin sayı',
+        'Hündürlük',
+        'Sürət',
+        'C. en',
+        'C. uzunluq',
+        'Şəkilin çəkilməsi',
+      ]
+    };
+  },
+  methods: {
+    start(){
+      this.$store.dispatch('test') 
+    }
+  }
 }
 </script>
 
 <style>
 #telemetry{
   height: 100%;
-  background-color: #324353;
+  /* background-color: #324353; */
 }
 .v-expansion-panel__container{
-  background-color: #374d63!important;
+  background-color: #2c3e50!important;
+}
+.v-expansion-panel__body{
+  background-color: #34495e;
 }
 </style>

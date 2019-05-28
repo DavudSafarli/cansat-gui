@@ -15,6 +15,7 @@ import Vuetify, {
   VDataTable,
   VExpansionPanel,
   VExpansionPanelContent,
+  VDivider,
 } from 'vuetify/lib';
 
 import 'vuetify/src/stylus/app.styl';
@@ -38,5 +39,6 @@ Vue.use(Vuetify, {
     VDataTable,
     VExpansionPanel,
     VExpansionPanelContent,
+    VDivider,
   },
 });

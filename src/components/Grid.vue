@@ -7,13 +7,9 @@
     class="elevation-1"
   >
     <template slot="items" slot-scope="props">
-      <td>{{ props.item.time }}</td>
-      <td class="text-xs-right">{{ props.item.packetCount }}</td>
-      <td class="text-xs-right">{{ props.item.altitude }}</td>
-      <td class="text-xs-right">{{ props.item.speed }}</td>
-      <td class="text-xs-right">{{ props.item.lon }}</td>
-      <td class="text-xs-right">{{ props.item.lat }}</td>
-      <td class="text-xs-right">{{ props.item.picIsTaken }}</td>
+      <td v-for="(v, k) in props.item"
+      :key="k" :class="{'text-xs-right': k !== 'time'}"
+      >{{ v }}</td>
     </template>
   </v-data-table>
   </div>
@@ -50,7 +46,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 td:not(:last-child){
   border-right: 1px solid #eee;
 }
@@ -60,6 +56,7 @@ td:not(:last-child){
   flex-direction: column;
   // justify-content: space-around;
   .canvas-wrap{
+    border: 1px solid rgba(5, 5, 5, 0.3);
     width: 100%;
     height: 33vh;
   }
