@@ -1,0 +1,8 @@
+paraşütün rəngi dəyişdi
+rgb(9, 2, 71);
+
+modelin ayaqları
+əvvəl 4 dənə, yanlara açılan
+indi 3 dənə
+açılma mexanizmi də dəyişdi
+

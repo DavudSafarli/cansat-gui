@@ -8,17 +8,19 @@
 // eslint-disable-next-line
 import io from 'socket.io-client';
 // import Chart from 'chart.js/dist/Chart.bundle';
-
-// let socket;
+``
+let socket;
 
 export default {
   mounted() {
     // const vue = this;
-    // socket = io('localhost:8001');
-    // socket.on('data', (data) => {
-    //   console.log(data);
-    //   vue.arr.push(data);
-    // });
+    
+    var socket = io('localhost:3000');
+    console.log(io)
+    socket.on('data', (data) => {
+      console.log(data);
+      vue.arr.push(data);
+    });
   },
   data() {
     return {
@@ -40,5 +42,6 @@ export default {
 
 html{
   overflow-y: auto;
+  
 }
 </style>
