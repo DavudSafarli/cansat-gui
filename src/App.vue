@@ -8,7 +8,7 @@
 // eslint-disable-next-line
 import io from 'socket.io-client';
 // import Chart from 'chart.js/dist/Chart.bundle';
-``
+
 let socket;
 
 export default {
