@@ -7,7 +7,7 @@
         </div>
         <v-layout justify-center class="px-4 py-1" wrap>
           <v-flex>
-            <v-btn color="success" style="text-transform: none">Ready</v-btn>
+            <v-btn color="success" style="text-transform: none" @click="reset">Ready</v-btn>
           </v-flex>
            <v-flex>
             <v-btn color="red" @click="start">Connect</v-btn>
@@ -70,6 +70,9 @@ export default {
   methods: {
     start(){
       this.$store.dispatch('test') 
+    },
+    reset(){
+      this.$store.dispatch('reset') 
     }
   }
 }

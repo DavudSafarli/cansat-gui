@@ -1,40 +1,31 @@
 var serialport = require("serialport");
 const ByteLength = require('@serialport/parser-byte-length')
 const onData = require('./onData')
-var express = require('express');
-var app = express();
-var server = app.listen(3000);
-var io = require('socket.io').listen(server);
+
+var app = require('express')();
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+
 io.origins('*:*')
 io.set('origins', '*:*');
 
+app.get('/', function(req, res){
+  res.send('as')
+});
 
-const DATA_SIZE = 35
-const DATA_L_REDUNDANT_SIZE = 15
-const DATA_R_REDUNDANT_SIZE = 5
-const DATA_MAX_SIZE = DATA_SIZE + DATA_L_REDUNDANT_SIZE + DATA_R_REDUNDANT_SIZE
-
-app.get('/', function (req, res) {
-  res.send('hello world')
-})
-
-// DEFINE PORT
-let PORT = "COM3";
-const Readline = serialport.parsers.Readline
-const port = new serialport(PORT)
-const parser = port.pipe(new ByteLength({length: 10}))
-parser.on('open', onOpen);
-// parser.on('data', onData);
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('reset', function(bool){
+    console.log('resetledim ay qa')
+    port.write('x')
+  });
+});
 
 
-function onOpen(){
-  console.log('Open connections!');
-}
 
-
-setInterval(() => {
-  port.write('x')
-}, 1000); 
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
 
 // io.on('connection', function (socket) {
 //   console.log('girdi');
@@ -43,3 +34,22 @@ setInterval(() => {
 //   //   console.log(data);
 //   // });
 // });
+
+
+// DEFINE PORT
+// let PORT = "COM3";
+// const Readline = serialport.parsers.Readline
+// const port = new serialport(PORT)
+// const parser = port.pipe(new ByteLength({length: 10}))
+// parser.on('open', onOpen);
+// parser.on('data', onData);
+
+
+// function onOpen(){
+//   console.log('Open connections!');
+// }
+
+
+// setInterval(() => {
+//   port.write('x')
+// }, 1000); 

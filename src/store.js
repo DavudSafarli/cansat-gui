@@ -1,3 +1,4 @@
+import {socket} from './socket'
 import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
@@ -135,6 +136,11 @@ export default new Vuex.Store({
         })
         
       }, 1000);
+    },
+    reset() {
+      console.log(socket.emit)
+      socket.emit('reset', true)
     }
+
   },
 });
