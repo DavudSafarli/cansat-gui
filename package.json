@@ -12,9 +12,11 @@
   "dependencies": {
     "chart.js": "^2.8.0",
     "concurrently": "^4.1.0",
+    "convert-array-to-csv": "^1.0.8",
     "cors": "^2.8.5",
     "electron": "^4.2.2",
     "express": "^4.17.0",
+    "lowdb": "^1.0.0",
     "nodemon": "^1.19.0",
     "register-service-worker": "^1.6.2",
     "serialport": "^7.1.5",

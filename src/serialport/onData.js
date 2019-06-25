@@ -13,7 +13,8 @@ async function onData(data) {
     if(char == END_CH) {
       read = false;
       // now you can parse it
-      parseData()
+      parseData(dataString)
+      dataString = "";
       return acc;
     }
     else if(char == START_CH) {
@@ -25,31 +26,20 @@ async function onData(data) {
       dataString += char;
     }
     return acc;
-  }, "")
+  }, "")  
 }
-function parseData() {
-  console.log(dataString)
+
+
+function parseData(string) {
   dataString = "";
-}
 
 
-function Array2(cap) {
-  this.capacity = cap;
-  this.array = new Array(2)
+  // parse parse parse
+  
+  
+
+  
+  // parse parse parse
+
+
 }
-Array2.prototype.add = function(char){
-  this.shift()
-  this.array[this.capacity-1] = char
-}
-Array2.prototype.shift = function(){
-  for (let i = 1; i < this.capacity; i++) {
-    this.array[i-1] = this.array[i]
-  }
-}
-Array2.prototype.toString = function(){
-  return this.array.join('')
-}
-Array2.prototype.clear = function(){
-  this.array = new Array(2)
-}
-module.exports = onData;

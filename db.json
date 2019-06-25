@@ -1,0 +1,15 @@
+{
+  "telemetry": [
+    "{\"a\": 4}"
+  ],
+  "user": {
+    "name": [
+      {
+        "id": 1,
+        "title": "lowdb is awesome"
+      }
+    ]
+  },
+  "count": 1,
+  "picture": []
+}
