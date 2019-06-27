@@ -11,6 +11,7 @@ db.defaults({ telemetry: [], picture: []})
 
 module.exports = {
   saveTelemetry: (telemetry) => {
+    console.log(telemetry)
     db.get('telemetry')
     .push(telemetry)
     .write()
@@ -19,5 +20,8 @@ module.exports = {
     db.get('picture')
     .push(pic)
     .write()
+  },
+  getTelemetry: () => {
+    return db.get('telemetry').value()
   }
 }

@@ -14,15 +14,7 @@ let socket;
 
 export default {
   mounted() {
-    f(this);
-    // const vue = this;
-    
-    // var socket = io('localhost:3000');
-    // console.log(io)
-    // socket.on('data', (data) => {
-    //   console.log(data);
-    //   vue.arr.push(data);
-    // });
+    f();
   },
   data() {
     return {

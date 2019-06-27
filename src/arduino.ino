@@ -2,15 +2,21 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>  
 #include <SoftwareSerial.h>
+#include <TinyGPS++.h>
 
+// pins for xbee
 #define rxPin 2
 #define txPin 3
+// GPS -> Serial1 -> 18/19
+
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 #define TEAM_ID 2073
 
 SoftwareSerial xbee =  SoftwareSerial(rxPin, txPin);
+
 Adafruit_BME280 bme;
+TinyGPSPlus gps;
 
 // will be set in reset function ONCE
 unsigned long startTime;
@@ -27,6 +33,9 @@ int packetCounter;
 // for calculating speed
 float previousAltitude;
 unsigned long previousAltitudeTime;
+float lat, lon;
+bool bmeFlag = true;
+bool gpsFlag = true;
 
 void setup() {
   Serial.begin(9600);
@@ -36,6 +45,8 @@ void setup() {
   }
   pinMode(rxPin, INPUT);
   pinMode(txPin, OUTPUT);
+  // gps baud rate
+  Serial1.begin(9600);
   // set the data rate for the SoftwareSerial port
   xbee.begin(9600);
   transmit = false;
@@ -46,6 +57,7 @@ void setup() {
 }
 
 void reset() {
+  Serial.println("RESET");
   relativeAltitude = bme.readAltitude(SEALEVELPRESSURE_HPA);
   previousAltitude = 0;
   startTime = millis();
@@ -65,14 +77,20 @@ void doTheThing() {
   current = millis();
   telemetryDelta = current - previousTelemetry;
   cameraDelta = current - previousCamera;
-  
-  if(telemetryDelta > 900) {
-    previousAltitude = bme.readAltitude(SEALEVELPRESSURE_HPA) - relativeAltitude;
-    previousAltitudeTime = current;
-  }
+
   if(telemetryDelta > 999) {
     previousTelemetry = millis();
+    bmeFlag = true;
     sendTelemetry();
+  }
+  else if(telemetryDelta > 600 && bmeFlag) {
+    bmeFlag = false;
+    Serial.print("900: ");
+    previousAltitude = bme.readAltitude(SEALEVELPRESSURE_HPA) - relativeAltitude;
+    Serial.println(previousAltitude);
+    previousAltitudeTime = current;
+ }else {
+    setGpsLocation();
   }
 }
 
@@ -80,9 +98,14 @@ void doTheThing() {
 void sendTelemetry() {
 // calculate altitude
   float altitude = bme.readAltitude(SEALEVELPRESSURE_HPA) - relativeAltitude;
+  Serial.print("999: ");
+  Serial.println(altitude);
 // calculate velocity = (altitude - previous altitude)/delta time
-  float velocity = (altitude - previousAltitude)/(current - previousAltitudeTime)*1000;
-  String telemetry = createTelemetry(altitude, velocity, 1, 2, 1);
+  float velocity = ((altitude - previousAltitude)/(current - previousAltitudeTime))*1000;
+  String telemetry = createTelemetry(altitude, velocity, lat, lon, 1);
+  Serial.print("velocity");
+  Serial.println(velocity);
+  Serial.print("telemetry");
   Serial.println(telemetry);
 
 //  string to char array
@@ -104,9 +127,29 @@ void readCommand() {
 String createTelemetry(float altitude, float velocity, float gps1, float gps2, int pic) {
   unsigned long upTime = millis() - startTime;
   // <TEAM ID>,<upTime>,<counter>,<altitude>,<velocity>,<gps lat.>,<gps lon.>,<pic t/f>
-  String s = "S" + String(TEAM_ID) + "," + String(upTime) + "," + String(packetCounter) + "," + 
-  String(altitude) + "," + String(velocity) + "," + 
-  String(gps1) + "|"  + String(gps2) + 
-  String(pic) + "E";
+  String s = "{" + String(TEAM_ID) + "," + String(upTime) + "," + String(packetCounter) + "," + 
+  String(altitude) + "," + String(velocity) + "," + String(gps1) + ","  + String(gps2) + "," +
+  String(pic) + "}";
   return s;
 }
+
+
+void setGpsLocation() {
+  if (Serial1.available() > 0){
+    Serial.write(Serial1.read());
+    gps.encode(Serial1.read());
+    if (gps.location.isUpdated()){
+      Serial.print("Latitude= "); 
+      lat = gps.location.lat();
+      Serial.print(gps.location.lat(), 6);
+      Serial.print(" Longitude= "); 
+      lat = gps.location.lng();
+      Serial.println(gps.location.lng(), 6);
+    }
+  }
+}
+
+
+
+
+

@@ -24,14 +24,20 @@ export default {
     return {
       headers: [
         {
-          text: 'Çalışma müddəti',
+          text: 'Komanda ID',
+          align: 'left',
+          sortable: false,
+          value: 'time'
+        },  
+        {
+          text: 'Çalışma müddəti (ms)',
           align: 'left',
           sortable: false,
           value: 'time'
         },
         { text: `Paketlərin sayı`, value: 'packetCount' },
-        { text: 'Hündürlük', value: 'altitude' },
-        { text: 'Sürət', value: 'speed' },
+        { text: 'Hündürlük (m)', value: 'altitude' },
+        { text: 'Sürət (mps)', value: 'speed' },
         { text: 'C. en ', value: 'lon' },
         { text: 'C. uzunluq', value: 'lat' },
         { text: 'Şəkilin çəkilmə', value: 'picIsTaken' }

@@ -140,6 +140,17 @@ export default new Vuex.Store({
     reset() {
       console.log(socket.emit)
       socket.emit('reset', true)
+    },
+    processTelemetry({commit},data) {
+      commit('ADD_DATA', data)
+      commit('UPDATE_ALTITUDE', {
+        label: data.Count,
+        data: data.Altitude
+      })
+      commit('UPDATE_SPEED', {
+        label: data.Count,
+        data: data.Velocity
+      })
     }
 
   },

@@ -1,12 +1,12 @@
 import io from 'socket.io-client';
+import store from './store'
 
 var socket;
-export default function(vue) {
+export default function() {
     socket = io('localhost:3000');
-    socket.on('data', (data) => {
-        vue.arr.push(data);
+    socket.on('telemetry', (data) => {
+        store.dispatch('processTelemetry', data);
     });
-    
 }
 
 

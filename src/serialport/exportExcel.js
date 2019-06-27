@@ -1,42 +1,8 @@
-const { convertArrayToCSV } = require('convert-array-to-csv');
-const converter = require('convert-array-to-csv');
+var fs = require('fs')
+var json2xls = require('json2xls');
+var db = require('./db')
 
-const header = ['number', 'first', 'last', 'handle'];
-const dataArrays = [
-  [1, 'Mark', 'Otto', '@mdo'],
-  [2, 'Jacob', 'Thornton', '@fat'],
-  [3, 'Larry', 'the Bird', '@twitter'],
-];
-const dataObjects = [
-  {
-    number: 1,
-    first: 'Mark',
-    last: 'Otto',
-    handle: '@mdo',
-  },
-  {
-    number: 2,
-    first: 'Jacob',
-    last: 'Thornton',
-    handle: '@fat',
-  },
-  {
-    number: 3,
-    first: 'Larry',
-    last: 'the Bird',
-    handle: '@twitter',
-  },
-];
+var json = db.getTelemetry()
 
-/*
-  const csvFromArrayOfObjects  = 'number,first,last,handle\n1,Mark,Otto,@mdo\n2,Jacob,Thornton,@fat\n3,Larry,the Bird,@twitter\n';
-*/
-const csvFromArrayOfObjects = convertArrayToCSV(dataObjects);
-
-/*
-  const csvFromArrayOfArrays  = 'number;first;last;handle\n1;Mark;Otto;@mdo\n2;Jacob;Thornton;@fat\n3;Larry;the Bird;@twitter\n';
-*/
-const csvFromArrayOfArrays = convertArrayToCSV(dataArrays, {
-  header,
-  separator: ';'
-});
+var xls = json2xls(json);
+fs.writeFileSync('dato.xlsx', xls, 'binary');

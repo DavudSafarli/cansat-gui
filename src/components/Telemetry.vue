@@ -34,7 +34,7 @@
               </v-flex>
 
             </v-layout>
-            <v-divider v-if="i + 1!= 7"></v-divider>
+            <v-divider v-if="i + 1!= 8"></v-divider>
           </v-flex>
           
         </v-layout>
@@ -57,6 +57,7 @@ export default {
     return {
       panel: [true, true],
       telemetry: [
+        'Komanda ID',
         'Çalışma müddəti',
         'Paketlərin sayı',
         'Hündürlük',

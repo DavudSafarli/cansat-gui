@@ -1,45 +1,28 @@
-const START_CH = "S"
-const END_CH = "E"
+var serialport  = require("serialport");
+var ByteLength  = require('@serialport/parser-byte-length')
+var app         = require('express')();
+var http        = require('http').createServer(app);
+var io          = require('socket.io')(http);
+var db          = require("./db");
 
-let dataInPacket = "";
-let dataString = "";
-let read = false;
-async function onData(data) {
-  // get the real data within RECEIVED packet, but it could be just half of the data
-  dataInPacket = await data.reduce((acc, code) => {
-    let char = String.fromCharCode(code)
-    
-    // reading the END_CH means you read all data within TRANSMITTED packet sent from xbee
-    if(char == END_CH) {
-      read = false;
-      // now you can parse it
-      parseData(dataString)
-      dataString = "";
-      return acc;
-    }
-    else if(char == START_CH) {
-      read = true;
-      return acc;
-    }
-    if(read){
-      acc += char;
-      dataString += char;
-    }
-    return acc;
-  }, "")  
-}
+io.origins('*:*')
+io.set('origins', '*:*');
 
+app.get('/', function(req, res){
+  res.send('as')
+});
 
-function parseData(string) {
-  dataString = "";
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('reset', function(bool){
+    console.log('resetledim ay qa')
+    port.write('x')
+  });
+  setInterval(() => {
+      io.emit('telemetry', {altitude: '500 metr'})
+  }, 5000);
+});
 
-
-  // parse parse parse
-  
-  
-
-  
-  // parse parse parse
-
-
-}
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
