@@ -5,19 +5,21 @@
 #include <TinyGPS++.h>
 
 // pins for xbee
-#define rxPin 2
-#define txPin 3
+// #define rxPin 2
+// #define txPin 3
 // GPS -> Serial1 -> 18/19
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 #define TEAM_ID 2073
 
-SoftwareSerial xbee =  SoftwareSerial(rxPin, txPin);
+// SoftwareSerial xbee =  SoftwareSerial(rxPin, txPin);
 
 Adafruit_BME280 bme;
 TinyGPSPlus gps;
 
+float latitudeBase = 40.467087;
+float longtitudeBase = 49.489784;
 // will be set in reset function ONCE
 unsigned long startTime;
 // millis
@@ -48,16 +50,16 @@ void setup() {
   // gps baud rate
   Serial1.begin(9600);
   // set the data rate for the SoftwareSerial port
-  xbee.begin(9600);
+  // xbee.begin(9600);
   transmit = false;
   previousTelemetry = millis();
   previousCamera = millis();
   packetCounter = 0;
-  reset();
+//  reset();
 }
 
 void reset() {
-  Serial.println("RESET");
+  // Serial.println("RESET");
   relativeAltitude = bme.readAltitude(SEALEVELPRESSURE_HPA);
   previousAltitude = 0;
   startTime = millis();
@@ -65,7 +67,8 @@ void reset() {
 }
 
 void loop() {
-  if(xbee.available()){
+  // if(xbee.available()){
+  if(Serial.available()){
     readCommand();
   }
   if(transmit) {
@@ -85,9 +88,9 @@ void doTheThing() {
   }
   else if(telemetryDelta > 600 && bmeFlag) {
     bmeFlag = false;
-    Serial.print("900: ");
+    // Serial.print("900: ");
     previousAltitude = bme.readAltitude(SEALEVELPRESSURE_HPA) - relativeAltitude;
-    Serial.println(previousAltitude);
+    // Serial.println(previousAltitude);
     previousAltitudeTime = current;
  }else {
     setGpsLocation();
@@ -98,31 +101,33 @@ void doTheThing() {
 void sendTelemetry() {
 // calculate altitude
   float altitude = bme.readAltitude(SEALEVELPRESSURE_HPA) - relativeAltitude;
-  Serial.print("999: ");
-  Serial.println(altitude);
+  // Serial.print("999: ");
+  // Serial.println(altitude);
 // calculate velocity = (altitude - previous altitude)/delta time
   float velocity = ((altitude - previousAltitude)/(current - previousAltitudeTime))*1000;
   String telemetry = createTelemetry(altitude, velocity, lat, lon, 1);
-  Serial.print("velocity");
-  Serial.println(velocity);
-  Serial.print("telemetry");
-  Serial.println(telemetry);
+  // Serial.print("velocity");
+  // Serial.println(velocity);
+  // Serial.print("telemetry");
+  // Serial.println(telemetry);
 
 //  string to char array
   char charBuf[50];
   telemetry.toCharArray(charBuf, 50);
 // transmit
-  xbee.write(charBuf);
+  // xbee.write(charBuf);
+  Serial.write(charBuf);
   packetCounter++;
 }
 
 void readCommand() {
-  char received = xbee.read();
+  // char received = xbee.read();
+  char received = Serial.read();
   String str = String(received);
   if(str == "x") {
     reset();
   }
-}
+} 
 
 String createTelemetry(float altitude, float velocity, float gps1, float gps2, int pic) {
   unsigned long upTime = millis() - startTime;
@@ -133,23 +138,19 @@ String createTelemetry(float altitude, float velocity, float gps1, float gps2, i
   return s;
 }
 
-
 void setGpsLocation() {
-  if (Serial1.available() > 0){
-    Serial.write(Serial1.read());
-    gps.encode(Serial1.read());
-    if (gps.location.isUpdated()){
-      Serial.print("Latitude= "); 
-      lat = gps.location.lat();
-      Serial.print(gps.location.lat(), 6);
-      Serial.print(" Longitude= "); 
-      lat = gps.location.lng();
-      Serial.println(gps.location.lng(), 6);
-    }
-  }
+  // if (Serial1.available() > 0){
+  //   Serial.write(Serial1.read());
+  //   gps.encode(Serial1.read());
+  //   if (gps.location.isUpdated()){
+  //     Serial.print("Latitude= "); 
+  //     lat = gps.location.lat();
+  //     Serial.print(gps.location.lat(), 6);
+  //     Serial.print(" Longitude= "); 
+  //     lat = gps.location.lng();
+  //     Serial.println(gps.location.lng(), 6);
+  //   }
+  // }
+  latitudeBase += random(-0.00005, 0.00005);
+  longtitudeBase += random(-0.00005, 0.00005);
 }
-
-
-
-
-

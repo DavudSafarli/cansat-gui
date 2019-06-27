@@ -12,26 +12,13 @@ app.get('/', function(req, res){
   res.send('as')
 });
 
-let altitude = 200;
-let speed = 20;
-let c = 1;
+
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('reset', function(bool){
     console.log('resetledim ay qa')
     port.write('x')
   });
-  // setInterval(() => {
-  //   io.emit('telemetry', {'Team ID': 1233,
-  //   'UpTime': 1233,
-  //   'Count': c++,
-  //   'Altitude': altitude-=5,
-  //   'Velocity': speed + (Math.random() * 10 - 5),
-  //   'Latitude': 1233,
-  //   'Longtitude': 1233,
-  //   'Image': 1233
-  //   })
-  // }, 1100);
 });
 
 http.listen(3000, function(){
